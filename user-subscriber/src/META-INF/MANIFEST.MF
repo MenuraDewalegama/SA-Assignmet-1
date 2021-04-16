@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: User-publisher
-Bundle-SymbolicName: user-publisher
+Bundle-Name: User-subscriber
+Bundle-SymbolicName: UserServiceSubscriber
 Bundle-Version: 1.0.0
 Bundle-Activator: lk.sliit.code4.osgi.user.UserServiceActivator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: lk.sliit.code4.osgi.user
-Import-Package: org.osgi.framework, lk.sliit.code4.osgi.item
+Import-Package: org.osgi.framework, lk.sliit.code4.osgi.item, lk.sliit.code4.osgi.item.entity, lk.sliit.code4.osgi.customer, lk.sliit.code4.osgi.customer.entity, lk.sliit.code4.osgi.order, lk.sliit.code4.osgi.orderDetail

@@ -24,6 +24,10 @@
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @since : 16/04/2021
+ * @since : 16/04/2021
  * @since : 16/04/2021
  * @since : 16/04/2021
  * @since : 16/04/2021
@@ -34,35 +38,171 @@
  */
 package lk.sliit.code4.osgi.user;
 
-import lk.sliit.code4.osgi.item.ItemServicePublish;
-import lk.sliit.code4.osgi.item.entity.Item;
+import lk.sliit.code4.osgi.user.constant.InputTypes;
+import lk.sliit.code4.osgi.user.service.ItemUserService;
+import lk.sliit.code4.osgi.user.service.SuperUserService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class UserServiceActivator implements BundleActivator {
 
-    ItemServicePublish itemServicePublish;
-    ServiceReference itemServiceReference;
+    int userInstructionNumber;
+    SuperUserService itemUserService = new ItemUserService();
 
     @Override
     public void start(BundleContext context) throws Exception {
-        System.out.println("User subscriber is started..!");
+        System.out.println("UserServiceActivator is started...!");
+        itemUserService.setBundleContext(context);
 
-        itemServiceReference = context.getServiceReference(ItemServicePublish.class.getName());
-        itemServicePublish = (ItemServicePublish) context.getService(itemServiceReference);
+        Scanner scanner = new Scanner(System.in);
 
-        Item item = itemServicePublish.itemAddORUpdateUserService(true);
-        if (itemServicePublish.addItem(item)) {
-            System.out.println("Item Added successfully..!");
-            itemServicePublish.findItems().forEach(System.out::println);
-        } else {
-            System.err.println("Item Added Failed..!");
+        try {
+            userInstruction();
+            System.out.println("Select the option by using respective number:");
+            this.userInstructionNumber = scanner.nextInt();
+
+            switch (this.userInstructionNumber) {
+                case InputTypes.ADD_CUSTOMER:
+                    printNotYetImplemented();
+                    break;
+                case InputTypes.UPDATE_CUSTOMER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.DELETE_CUSTOMER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_CUSTOMER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_CUSTOMERS:
+                    printNotYetImplemented();
+                    break;
+
+
+                /* ITEM */
+                case InputTypes.ADD_ITEM:
+                    this.itemUserService.add();
+                    break;
+                case InputTypes.UPDATE_ITEM:
+                    this.itemUserService.update();
+                    break;
+
+                case InputTypes.DELETE_ITEM:
+                    this.itemUserService.delete();
+                    break;
+
+                case InputTypes.VIEW_ITEM:
+                    this.itemUserService.view();
+                    break;
+
+                case InputTypes.VIEW_ITEMS:
+                    this.itemUserService.viewAll();
+                    break;
+
+
+                /* ORDERS */
+                case InputTypes.ADD_ORDER:
+                    printNotYetImplemented();
+                    break;
+                case InputTypes.UPDATE_ORDER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.DELETE_ORDER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_ORDER:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_ORDERS:
+                    printNotYetImplemented();
+                    break;
+
+
+                /* ORDER DETAIL */
+                case InputTypes.ADD_ORDER_DETAIL:
+                    printNotYetImplemented();
+                    break;
+                case InputTypes.UPDATE_ORDER_DETAIL:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.DELETE_ORDER_DETAIL:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_ORDER_DETAIL:
+                    printNotYetImplemented();
+                    break;
+
+                case InputTypes.VIEW_ORDER_DETAILS:
+                    printNotYetImplemented();
+                    break;
+
+                default:
+                    System.err.println("Unknown instruction.");
+
+            }
+        } catch (InputMismatchException e) {
+//            e.printStackTrace();
+            System.err.println("Invalid input, only accept given integers above.");
         }
+
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        System.out.println("User subscriber is stopped..!");
+        System.out.println("UserServiceActivator is stopped...!");
+    }
+
+
+    private void userInstruction() {
+        System.out.println("");
+        System.out.println("*** Customer ****");
+        System.out.println("ADD_CUSTOMER : " + InputTypes.ADD_CUSTOMER);
+        System.out.println("UPDATE_CUSTOMER : " + InputTypes.UPDATE_CUSTOMER);
+        System.out.println("DELETE_CUSTOMER : " + InputTypes.DELETE_CUSTOMER);
+        System.out.println("VIEW_CUSTOMER : " + InputTypes.VIEW_CUSTOMER);
+        System.out.println("VIEW_CUSTOMERS : " + InputTypes.VIEW_CUSTOMERS);
+        System.out.println("");
+
+        System.out.println("");
+        System.out.println("*** Item ****");
+        System.out.println("ADD_ITEM : " + InputTypes.ADD_ITEM);
+        System.out.println("UPDATE_ITEM : " + InputTypes.UPDATE_ITEM);
+        System.out.println("DELETE_ITEM : " + InputTypes.DELETE_ITEM);
+        System.out.println("VIEW_ITEM : " + InputTypes.VIEW_ITEM);
+        System.out.println("VIEW_ITEMS : " + InputTypes.VIEW_ITEMS);
+        System.out.println("");
+
+        System.out.println("");
+        System.out.println("*** Order ****");
+        System.out.println("ADD_ORDER : " + InputTypes.ADD_ORDER);
+        System.out.println("UPDATE_ORDER : " + InputTypes.UPDATE_ORDER);
+        System.out.println("DELETE_ORDER : " + InputTypes.DELETE_ORDER);
+        System.out.println("VIEW_ORDER : " + InputTypes.VIEW_ORDER);
+        System.out.println("VIEW_ORDERS : " + InputTypes.VIEW_ORDERS);
+        System.out.println("");
+
+        System.out.println("");
+        System.out.println("*** OrderDetail ****");
+        System.out.println("ADD_ORDER_DETAIL : " + InputTypes.ADD_ORDER_DETAIL);
+        System.out.println("UPDATE_ORDER_DETAIL : " + InputTypes.UPDATE_ORDER_DETAIL);
+        System.out.println("DELETE_ORDER_DETAIL : " + InputTypes.DELETE_ORDER_DETAIL);
+        System.out.println("VIEW_ORDER_DETAIL : " + InputTypes.VIEW_ORDER_DETAIL);
+        System.out.println("VIEW_ORDER_DETAILS : " + InputTypes.VIEW_ORDER_DETAILS);
+        System.out.println("");
+    }
+
+    private void printNotYetImplemented(){
+        System.out.println("This feature is not yest implemented, sorry for the inconvenience");
     }
 }

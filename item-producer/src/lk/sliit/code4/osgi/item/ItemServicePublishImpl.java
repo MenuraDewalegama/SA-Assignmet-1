@@ -29,6 +29,8 @@
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @since : 15/04/2021
  * @since : 15/04/2021
  * @since : 15/04/2021
  * @since : 15/04/2021
@@ -117,32 +119,73 @@ public class ItemServicePublishImpl implements ItemServicePublish {
         return this.itemLinkedList.stream().collect(Collectors.toList());
     }
 
+
     @Override
-    public void printSomething() {
-        System.out.println("I am superman");
+    public boolean isContain(int itemCode) {
+        boolean result = false;
+        try {
+            Item item = this.itemLinkedList
+                    .stream()
+                    .filter(itemDB -> itemDB.getCode() == itemCode)
+                    .collect(Collectors.toList()).get(0);
+            if (item!=null){
+                result = true;
+            }
+        } catch (IndexOutOfBoundsException e) {
+//            e.printStackTrace();
+            result = false;
+        }
+
+        return false;
     }
 
     @Override
+    public boolean isEmpty() {
+        return (this.itemLinkedList.isEmpty());
+    }
+
+    /*    @Override
     public Item itemAddORUpdateUserService(boolean isAdding) {
         item = new Item();
         if (!isAdding) {
-            /* update operation */
+            boolean isEligibilityToUpdate = true;
+            *//* update operation *//*
             do {
                 System.out.println("Enter Item code of the item to be updated:");
                 scanner = new Scanner(System.in);
-//                userInput = scanner.nextLine();
+                userInput = scanner.nextLine();
 
-                if (!(userInput.matches("^[A-Za-z]{1,}+[ .\\w]*$"))) {
-                    System.err.println("Item name should only be a number (except zero) without fractions.");
+                if (!(userInput.matches("^[1-9]{1,}$"))) {
+                    System.err.println("Item Code should only be a number (except zero) without fractions.");
+                } else {
+                    try {
+                        if (this.itemLinkedList.isEmpty()) {
+                            isEligibilityToUpdate = false;
+                            System.err.println("No items found in the DB...!");
+                        } else if ((!this.itemLinkedList.contains(findItem(Integer.parseInt(userInput))))) {
+                            isEligibilityToUpdate = false;
+                            System.err.println("No items found for the given ID in the DB...!");
+                        } else {
+                            isEligibilityToUpdate = true;
+                        }
+                    } catch (NumberFormatException e) {
+                        isEligibilityToUpdate = false;
+                        System.err.println("User given input is invalid, only accept integers...!");
+                        e.printStackTrace();
+                    } catch (IndexOutOfBoundsException e){
+                        isEligibilityToUpdate = false;
+                        System.err.println("No items found for the given ID in the DB...!");
+                        e.printStackTrace();
+                    }
                 }
-            } while (!userInput.matches("^[1-9]{1,}$"));
-            /* check whether there is a matching record for the given the id */
+            } while ((!userInput.matches("^[1-9]{1,}$")) && !isEligibilityToUpdate);
+            *//* check whether there is a matching record for the given the id *//*
 
             item.setCode(Integer.parseInt(userInput));
         }
 
 
-        /* Item name */
+        *//* Item name *//*
         do {
             System.out.println("Enter item name:");
 //            scanner = new Scanner(System.in);
@@ -156,7 +199,7 @@ public class ItemServicePublishImpl implements ItemServicePublish {
         item.setName(userInput);
 
 
-        /* Unit price */
+        *//* Unit price *//*
         do {
             System.out.println("Enter Item Unit Price:");
 //            scanner = new Scanner(System.in);
@@ -170,7 +213,7 @@ public class ItemServicePublishImpl implements ItemServicePublish {
         item.setUnitPrice(new BigDecimal(userInput));
 
 
-        /* Hand on Quantity */
+        *//* Hand on Quantity *//*
         do {
             System.out.println("Enter Item Hand on Quantity:");
 //            scanner = new Scanner(System.in);
@@ -187,12 +230,12 @@ public class ItemServicePublishImpl implements ItemServicePublish {
 
         return item;
 
-    }
+    }*/
 
 
-    @Override
+/*    @Override
     public boolean itemDeleteUserService(int itemCode) {
-        /* delete operation */
+        *//* delete operation *//*
         do {
             System.out.println("Enter Item code of the item to be deleted:");
 //            scanner = new Scanner(System.in);
@@ -202,10 +245,10 @@ public class ItemServicePublishImpl implements ItemServicePublish {
                 System.err.println("Item Code should only be a number (except zero) without fractions.");
             }
         } while ((!userInput.matches("^[1-9]{1,}$")) && this.itemLinkedList.contains(findItem(Integer.parseInt(userInput))));
-        /* check whether there is a matching record for the given the id */
+        *//* check whether there is a matching record for the given the id *//*
 
         item.setCode(Integer.parseInt(userInput));
 
         return deleteItem(itemCode);
-    }
+    }*/
 }

@@ -18,9 +18,9 @@ public interface ItemServicePublish {
 
     List<Item> findItems();
 
-    void printSomething();
 
-    Item itemAddORUpdateUserService(boolean isAdding);
+    boolean isContain(int itemCode);
 
-    boolean itemDeleteUserService(int itemCode);
+    boolean isEmpty();
+
 }
