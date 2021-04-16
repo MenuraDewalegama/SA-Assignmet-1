@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OrderDetail-publisher
+Bundle-SymbolicName: orderDetail-publisher
+Bundle-Version: 1.0.0
+Bundle-Activator: lk.sliit.code4.osgi.orderDetail.OrderDetailServiceActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: lk.sliit.code4.osgi.orderDetail
+Import-Package: org.osgi.framework
