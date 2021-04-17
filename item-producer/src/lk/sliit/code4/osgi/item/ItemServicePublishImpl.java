@@ -75,7 +75,6 @@ public class ItemServicePublishImpl implements ItemServicePublish {
 
     @Override
     public boolean updateItem(Item item) {
-
         boolean result = false;
         if (item != null) {
             try {
@@ -93,8 +92,6 @@ public class ItemServicePublishImpl implements ItemServicePublish {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
 
         return result;
@@ -102,7 +99,7 @@ public class ItemServicePublishImpl implements ItemServicePublish {
 
     @Override
     public boolean deleteItem(int itemCode) {
-        return this.itemLinkedList.removeIf(orderDetailDB -> orderDetailDB.getCode() == itemCode);
+        return this.itemLinkedList.removeIf(itemDB -> itemDB.getCode() == itemCode);
     }
 
     @Override

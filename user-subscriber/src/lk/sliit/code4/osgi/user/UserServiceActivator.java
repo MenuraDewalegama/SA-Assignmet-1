@@ -39,6 +39,7 @@
 package lk.sliit.code4.osgi.user;
 
 import lk.sliit.code4.osgi.user.constant.InputTypes;
+import lk.sliit.code4.osgi.user.service.CustomerUserService;
 import lk.sliit.code4.osgi.user.service.ItemUserService;
 import lk.sliit.code4.osgi.user.service.SuperUserService;
 import org.osgi.framework.BundleActivator;
@@ -51,11 +52,13 @@ public class UserServiceActivator implements BundleActivator {
 
     int userInstructionNumber;
     SuperUserService itemUserService = new ItemUserService();
+    SuperUserService customerUserService = new CustomerUserService();
 
     @Override
     public void start(BundleContext context) throws Exception {
         System.out.println("UserServiceActivator is started...!");
         itemUserService.setBundleContext(context);
+        customerUserService.setBundleContext(context);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -66,22 +69,22 @@ public class UserServiceActivator implements BundleActivator {
 
             switch (this.userInstructionNumber) {
                 case InputTypes.ADD_CUSTOMER:
-                    printNotYetImplemented();
+                    this.customerUserService.add();
                     break;
                 case InputTypes.UPDATE_CUSTOMER:
-                    printNotYetImplemented();
+                    this.customerUserService.update();
                     break;
 
                 case InputTypes.DELETE_CUSTOMER:
-                    printNotYetImplemented();
+                    this.customerUserService.delete();
                     break;
 
                 case InputTypes.VIEW_CUSTOMER:
-                    printNotYetImplemented();
+                    this.customerUserService.view();
                     break;
 
                 case InputTypes.VIEW_CUSTOMERS:
-                    printNotYetImplemented();
+                    this.customerUserService.viewAll();
                     break;
 
 
@@ -203,6 +206,6 @@ public class UserServiceActivator implements BundleActivator {
     }
 
     private void printNotYetImplemented(){
-        System.out.println("This feature is not yest implemented, sorry for the inconvenience");
+        System.out.println("This feature is not yet implemented, sorry for the inconvenience.");
     }
 }

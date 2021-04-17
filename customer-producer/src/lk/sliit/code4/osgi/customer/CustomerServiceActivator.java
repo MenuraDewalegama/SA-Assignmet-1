@@ -22,6 +22,12 @@
  * SOFTWARE.
  *
  * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @since : 15/04/2021
+ * @since : 15/04/2021
+ * @since : 15/04/2021
  * @since : 15/04/2021
  */
 /**
@@ -32,15 +38,23 @@ package lk.sliit.code4.osgi.customer;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 public class CustomerServiceActivator implements BundleActivator {
+
+    ServiceRegistration serviceRegistration;
+
     @Override
     public void start(BundleContext context) throws Exception {
         System.out.println("CustomerServiceActivator is started...!");
+        CustomerServicePublish customerServicePublish = new CustomerServicePublishImpl();
+        serviceRegistration = context.registerService(CustomerServicePublish.class.getName(), customerServicePublish, null);
+
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
         System.out.println("CustomerServiceActivator is stopped...!");
+        serviceRegistration.unregister();
     }
 }

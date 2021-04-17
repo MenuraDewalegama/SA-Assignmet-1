@@ -24,6 +24,12 @@
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
  * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @author : Dhanusha Perera
+ * @since : 15/04/2021
+ * @since : 15/04/2021
+ * @since : 15/04/2021
  * @since : 15/04/2021
  * @since : 15/04/2021
  * @since : 15/04/2021
@@ -48,7 +54,6 @@ public class CustomerServicePublishImpl implements CustomerServicePublish {
 
     @Override
     public boolean addCustomer(Customer customer) {
-        System.out.println("Customer added successfully..!");
         boolean result = false;
         if (customer != null) {
             customer.setId(++counter);
@@ -59,12 +64,31 @@ public class CustomerServicePublishImpl implements CustomerServicePublish {
 
     @Override
     public boolean updateCustomer(Customer customer) {
-        return false;
+        boolean result = false;
+        if (customer != null) {
+            try {
+                Customer customerResult = this.customerLinkedList
+                        .stream()
+                        .filter(customerDB -> customerDB.getId() == customerDB.getId())
+                        .collect(Collectors.toList())
+                        .get(0);
+
+                if (this.customerLinkedList.remove(customerResult)) {
+                    result = this.customerLinkedList.add(customer);
+                }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return result;
     }
 
     @Override
     public boolean deleteCustomer(int customerId) {
-        return false;
+        return this.customerLinkedList.removeIf(customerDB -> customerDB.getId() == customerId);
     }
 
     @Override
@@ -79,5 +103,25 @@ public class CustomerServicePublishImpl implements CustomerServicePublish {
     @Override
     public List<Customer> findCustomers() {
         return this.customerLinkedList.stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean isContain(int customerId) {
+        boolean result = false;
+        try {
+            Customer customer = findCustomer(customerId);
+            if (customer != null) {
+                result = true;
+            }
+        } catch (IndexOutOfBoundsException e) {
+//            e.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return this.customerLinkedList.isEmpty();
     }
 }
