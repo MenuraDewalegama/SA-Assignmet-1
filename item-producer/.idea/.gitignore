@@ -1,0 +1,8 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Datasource local storage ignored files
+/../../../../../../../../:\SLIIT\Year 3 -Semester 2\Software Architecture - SE3030 [2021FEB]\assignment 1\sa-assignment-1-osgi-framwork-project\item-producer\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/

@@ -1,7 +1,4 @@
-package lk.sliit.code4.osgi.customer.entity;/*
-@author : Dhanusha Perera
-@since : 15/04/2021
-*/
+package lk.sliit.code4.osgi.customer.entity;
 
 import java.io.Serializable;
 

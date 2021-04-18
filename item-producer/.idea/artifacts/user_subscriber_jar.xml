@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="user-subscriber:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/user_subscriber_jar</output-path>
+    <root id="root">
+      <element id="archive" name="user-subscriber.jar">
+        <element id="module-output" name="user-subscriber" />
+      </element>
+    </root>
+  </artifact>
+</component>

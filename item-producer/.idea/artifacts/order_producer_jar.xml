@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="order-producer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/order_producer_jar</output-path>
+    <root id="root">
+      <element id="archive" name="order-producer.jar">
+        <element id="module-output" name="order-producer" />
+        <element id="module-output" name="order-detail-producer" />
+      </element>
+      <element id="library" level="project" name="osgi.core-8.0.0" />
+    </root>
+  </artifact>
+</component>

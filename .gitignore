@@ -1,14 +1,14 @@
-item-producer/.idea
-item-producer/*.iml
+# item-producer/.idea
+# item-producer/*.iml
 
-item-producer/out
+# item-producer/out
 
-./customer-producer/*.iml
-./item-producer/*.iml
-./order-producer/*.iml
-./order-detail-producer/*.iml
-./user-subscriber/*.iml
+# ./customer-producer/*.iml
+# ./item-producer/*.iml
+# ./order-producer/*.iml
+# ./order-detail-producer/*.iml
+# ./user-subscriber/*.iml
 
-/out
-.idea
-*.iml
+# /out
+# .idea
+# *.iml

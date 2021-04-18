@@ -1,61 +1,16 @@
-/**
- * MIT License
- * <p>
- * Copyright (c) 2021 Dhanusha Perera
- * <p>
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * <p>
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * <p>
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- *
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @author : Dhanusha Perera
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- * @since : 17/04/2021
- */
-/**
- * @author : Dhanusha Perera
- * @since : 17/04/2021
- */
 package lk.sliit.code4.osgi.user.service;
 
 import lk.sliit.code4.osgi.customer.CustomerServicePublish;
 import lk.sliit.code4.osgi.customer.entity.Customer;
+import lk.sliit.code4.osgi.user.constant.*;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import java.util.Scanner;
 
 public class CustomerUserService implements SuperUserService {
+
+    private static CustomerUserService customerUserService = null;
 
     BundleContext context;
 
@@ -65,6 +20,16 @@ public class CustomerUserService implements SuperUserService {
     Customer customer;
     Scanner scanner = new Scanner(System.in);
     String userInput;
+
+    private CustomerUserService() {
+
+    }
+
+    public static CustomerUserService getInstance() {
+        return (customerUserService == null)
+                ? customerUserService = new CustomerUserService()
+                : customerUserService;
+    }
 
     @Override
     public void setBundleContext(BundleContext context) {
@@ -77,103 +42,159 @@ public class CustomerUserService implements SuperUserService {
         this.customerServicePublish = (CustomerServicePublish) context.getService(this.customerServiceReference);
     }
 
+    /**
+     * add a new customer.
+     * prompts the to enter required details.
+     */
     @Override
     public void add() {
-        this.customer = new Customer();
+        System.out.println(Dividers.ADD_CUSTOMER);
+
+        initNewCustomer();
         getCustomerNameFromUser();
         getCustomerPhoneNoFromUser();
 
         if (this.customerServicePublish.addCustomer(this.customer)) {
-            System.out.println("Customer added successfully..!");
+            System.out.println(Common.NEXT_LINE + EntityNames.CUSTOMER + SuccessfulMessages.ADDED_SUCCESSFUL);
             viewAll();
         } else {
-            System.err.println("Customer is not added..!");
+            System.err.println(Common.NEXT_LINE + EntityNames.CUSTOMER + FailedMessages.ADDED_UNSUCCESSFUL);
         }
     }
 
+    /**
+     * update an existing customer using customer id.
+     * prompts the to enter required details.
+     */
     @Override
     public void update() {
-        this.customer = new Customer();
+        System.out.println(Dividers.UPDATE_CUSTOMER);
+        initNewCustomer();
+
         if (!isCustomerDBEmpty()) {
             getCustomerIdFromUser();
-            getCustomerNameFromUser();
-            getCustomerPhoneNoFromUser();
+            if (!this.userInput.equals(Common.EXIT_MINUS_99)) {
+                getCustomerNameFromUser();
+                getCustomerPhoneNoFromUser();
 
-            if (this.customerServicePublish.updateCustomer(this.customer)) {
-                System.out.println("Customer updated successfully..!");
-                viewAll();
-            } else {
-                System.err.println("Customer is not updated..!");
+                if (this.customerServicePublish.updateCustomer(this.customer)) {
+                    System.out.println(Common.NEXT_LINE + EntityNames.CUSTOMER + SuccessfulMessages.UPDATED_SUCCESSFUL);
+
+                    /* view all the customers. */
+                    viewAll();
+                } else {
+                    System.err.println(Common.NEXT_LINE + EntityNames.CUSTOMER + FailedMessages.UPDATED_UNSUCCESSFUL);
+                }
             }
         } else {
-            System.out.println("No customers are found in the DB, try; adding one instead.");
+            System.err.println(Common.NO_CUSTOMERS_FOUND_IN_DB);
         }
     }
 
+    /**
+     * delete a given customer using customer id.
+     * prompts the to enter required details.
+     */
     @Override
     public void delete() {
+        System.out.println(Dividers.DELETE_CUSTOMER);
+
         initNewCustomer();
         if (!isCustomerDBEmpty()) {
             getCustomerIdFromUser();
 
-            if (this.customerServicePublish.deleteCustomer(this.customer.getId())) {
-                System.out.println("Customer deleted successfully..!");
-                viewAll();
-            } else {
-                System.err.println("Customer is NOT deleted successfully..!");
+            if (!this.userInput.equals(Common.EXIT_MINUS_99)) {
+                if (this.customerServicePublish.deleteCustomer(this.customer.getId())) {
+                    System.out.println(Common.NEXT_LINE + EntityNames.CUSTOMER + SuccessfulMessages.DELETED_SUCCESSFUL);
+
+                    /* view all the customers. */
+                    viewAll();
+                } else {
+                    System.err.println(Common.NEXT_LINE + EntityNames.CUSTOMER + FailedMessages.DELETED_UNSUCCESSFUL);
+                }
             }
         } else {
-            System.out.println("No customers are found in the DB.");
+            System.err.println(Common.NO_CUSTOMERS_FOUND_IN_DB);
         }
     }
 
+    /**
+     * prints a given customer in the terminal using customer id.
+     */
     @Override
     public void view() {
+//        System.out.println("********** VIEW CUSTOMER **********\n");
+
         initNewCustomer();
         if (!isCustomerDBEmpty()) {
             getCustomerIdFromUser();
 
-            this.customer = this.customerServicePublish.findCustomer(this.customer.getId());
-            if (this.customer != null) {
-                System.out.println("*** Customer details ***");
-                this.customer.toString();
-            } else {
-                System.err.println("Customer is NOT found..!");
+            if (!this.userInput.equals(Common.EXIT_MINUS_99)) {
+                this.customer = this.customerServicePublish.findCustomer(this.customer.getId());
+                if (this.customer != null) {
+                    System.out.println(Common.NEXT_LINE + Dividers.CUSTOMER);
+                    System.out.println(this.customer.toString());
+                } else {
+                    /* prompt no customer found */
+                    System.err.println(Common.NO_MATCHING_RECORD_FOUND);
+                }
             }
         } else {
-            System.out.println("No customers are found in the DB.");
+            System.err.println(Common.NO_CUSTOMERS_FOUND_IN_DB);
         }
     }
 
+    /**
+     * prints all the customers in the terminal.
+     */
     @Override
     public void viewAll() {
+//        System.out.println("********** VIEW ALL CUSTOMERS **********");
+
         if (!isCustomerDBEmpty()) {
-            System.out.println("*** Customer details ***");
+            System.out.println(Common.NEXT_LINE + Dividers.CUSTOMER);
             this.customerServicePublish.findCustomers().forEach(System.out::println);
         } else {
-            System.out.println("No customers are found in the DB.");
+            System.err.println(Common.NO_CUSTOMERS_FOUND_IN_DB);
+            this.customerServicePublish.addCustomer(new Customer(0, "Dhanusha Perera", "0751234567"));
+            this.customerServicePublish.addCustomer(new Customer(0, "Sachintha De Zoysa", "0112933445"));
         }
     }
 
+    /**
+     * creates a new customer instance and assign it to customer variable.
+     */
     private void initNewCustomer() {
         this.customer = new Customer();
     }
 
+    /**
+     * check the customer db is empty or not.
+     * if it is empty @returns true,
+     * otherwise false.
+     */
     private boolean isCustomerDBEmpty() {
         return this.customerServicePublish.isEmpty();
     }
 
+    /**
+     * gets the customer id from the user as an input.
+     */
     private void getCustomerIdFromUser() {
         boolean isEligible = true;
         do {
-            System.out.println("Enter Customer ID: ");
+            System.out.println(Common.NEXT_LINE + Instructions.ENTER_CUSTOMER_ID);
+            System.out.println(Instructions.TO_EXIT_ENTER_MINUS_99);
             this.userInput = scanner.nextLine();
 
-            if (!this.userInput.matches("\\d*")) {
-                System.err.println("Customer ID should only be an integer");
+            if (this.userInput.equals(Common.EXIT_MINUS_99)) {
+                return;
+            } else if (!this.userInput.matches("^\\d{1,}$")) {
+                System.err.println(EntityProperties.CUSTOMER_ID + ValidationPrompts.ONLY_BE_INTEGER);
             } else {
                 if (!this.customerServicePublish.isContain(Integer.parseInt(this.userInput))) {
-                    System.err.println("No customer found for the given ID.");
+                    /*  No customer found for the given ID. */
+                    System.err.println(Common.NO_MATCHING_RECORD_FOUND);
                     isEligible = false;
                 } else {
                     isEligible = true;
@@ -181,19 +202,24 @@ public class CustomerUserService implements SuperUserService {
             }
 
 
-        } while ((!this.userInput.matches("\\d*")) && !isEligible);
+        } while ((!this.userInput.matches("^\\d{1,}$")) || !isEligible);
 
         this.customer.setId(Integer.parseInt(this.userInput));
     }
 
+    /**
+     * gets the customer name from the user as an input.
+     */
     private void getCustomerNameFromUser() {
 
         do {
-            System.out.println("Enter Customer Name: ");
+            /* "\nEnter Customer Name: " */
+            System.out.println(Common.NEXT_LINE + Instructions.ENTER_CUSTOMER_NAME);
             this.userInput = scanner.nextLine();
 
             if (!this.userInput.matches("^[A-Za-z]*+[\\w .]*$")) {
-                System.err.println("Customer name should be only letters (space and underscore valid).");
+                /* "Customer name should be only contain letters (space and underscore valid)." */
+                System.err.println(ValidationPrompts.CUSTOMER_NAME_INVALID);
             }
 
         } while (!this.userInput.matches("^[A-Za-z]*+[\\w .]*$"));
@@ -201,13 +227,18 @@ public class CustomerUserService implements SuperUserService {
         this.customer.setName(this.userInput);
     }
 
+    /**
+     * gets the customer phone number from the user as an input.
+     */
     private void getCustomerPhoneNoFromUser() {
         do {
-            System.out.println("Enter Customer Phone No: ");
+            /* "\nEnter Customer Phone No: " */
+            System.out.println(Common.NEXT_LINE + Instructions.ENTER_CUSTOMER_PHONE);
             this.userInput = scanner.nextLine();
 
             if (!this.userInput.matches("\\d{10}$")) {
-                System.err.println("Customer phone no should be only 10 digit number (without any special characters).");
+                /* "Customer phone no should be only 10 digit number (without any special characters)." */
+                System.err.println(ValidationPrompts.CUSTOMER_PHONE_NO_INVALID);
             }
 
         } while (!this.userInput.matches("\\d{10}$"));

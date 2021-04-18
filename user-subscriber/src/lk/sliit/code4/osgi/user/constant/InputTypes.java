@@ -1,7 +1,4 @@
-package lk.sliit.code4.osgi.user.constant;/*
-@author : Dhanusha Perera
-@since : 16/04/2021
-*/
+package lk.sliit.code4.osgi.user.constant;
 
 public class InputTypes {
     public static final int ADD_CUSTOMER = 1;

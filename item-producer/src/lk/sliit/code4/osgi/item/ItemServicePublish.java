@@ -1,7 +1,4 @@
-package lk.sliit.code4.osgi.item;/*
-@author : Dhanusha Perera
-@since : 15/04/2021
-*/
+package lk.sliit.code4.osgi.item;
 
 import lk.sliit.code4.osgi.item.entity.Item;
 
@@ -18,6 +15,9 @@ public interface ItemServicePublish {
 
     List<Item> findItems();
 
+    boolean isInStock(int itemCode, int userRequestingQuantity);
+
+    boolean updateItemQuantity(int itemCode, int userRequestingQuantity);
 
     boolean isContain(int itemCode);
 
